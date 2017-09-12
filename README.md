@@ -1,8 +1,3 @@
-# angular-prest
-pREST component for Angular
-
-
-
 <p align="center">
   <h1 align="center">Angular Prest</h1>
   <p align="center">It is a wrapper service to use with Prest API.</p>
