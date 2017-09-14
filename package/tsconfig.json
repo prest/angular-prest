@@ -2,10 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": ".",
-    "rootDirs": [
-      "../frontend/src/app"
-    ],
     "outDir": "../dist/@prest/angular-prest",
+    "rootDirs": [
+      "../dist/@prest/angular-prest"
+    ],
     "target": "es5",
     "sourceMap": true,
     "module": "es2015",
@@ -37,6 +37,7 @@
     "index.ts"
   ],
   "angularCompilerOptions": {
+    "genDir": "../dist/@prest/angular-prest",
     "strictMetadataEmit": true
   }
 }

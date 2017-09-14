@@ -84,14 +84,33 @@ gulp.task('copy-package', (cb) => {
 });
 
 
-gulp.task('default', () => {
-  return runSequence(
+gulp.task('dev', ['build'], () => {
+  return gulp.watch([
+    '**/*.ts',
+    '**/*.html',
+    '**/*.css',
+    './src/**/assets/**',
+    '!**/*.ngfactory.ts',
+    '!**/*.ngsummary.json',
+    '!**/*.ngstyle.ts'
+  ], ['build']);
+});
+
+
+gulp.task('build', (done) => {
+  runSequence(
     'clean',
     'transpile',
     'copy-html-css',
     'rollup',
     'minify',
     'replace-ng-template-styles',
-    'copy-package'
+    'copy-package',
+    function() {
+      done();
+    }
   );
 });
+
+
+gulp.task('default', ['build']);

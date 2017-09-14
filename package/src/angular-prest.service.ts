@@ -14,8 +14,6 @@ import {
 } from 'rxjs';
 import 'rxjs/add/operator/map';
 
-import { getToken } from './utils';
-
 
 @Injectable()
 export class AngularPrestService {
