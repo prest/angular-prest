@@ -3,7 +3,7 @@ const tsconfigJson = require('./tsconfig.json')
 const packageJson = require('./package.json')
 
 const packageName = packageJson.name;
-const moduleName = packageName.split('/')[1];
+const moduleName = packageName.split('/')[1] ? packageName.split('/')[1] : packageName;
 
 const distPath = './dist';
 const distPackagePath = tsconfigJson.compilerOptions.outDir;

@@ -1,7 +1,7 @@
 {
   "name": "@prest/angular-prest",
-  "version": "0.1.0",
-  "description": "A service wrapper which help you to use the pREST&#39;s endpoints.",
+  "version": "1.0.0",
+  "description": "A service wrapper which help you to use the pREST.",
   "main": "bundles/angular-prest.umd.js",
   "module": "index.js",
   "typings": "index.d.ts",
@@ -22,7 +22,7 @@
     "url": "https://github.com/prest/angular-prest"
   },
   "peerDependencies": {
-    "@angular/core": "^2.4.0 || ^4.0.0",
-    "rxjs": "^5.0.1"
+    "@angular/core": "^4.0.0",
+    "rxjs": "^5.0.0"
   }
 }

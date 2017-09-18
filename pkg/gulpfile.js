@@ -9,9 +9,10 @@ const package = require('./package.json');
 const exec = require('child_process').exec;
 const tsconfigJson = require('./tsconfig.json');
 const runSequence = require('run-sequence');
+const karmaServer = require('karma').Server;
 
 const packageName = package.name;
-const moduleName = packageName.split('/')[1];
+const moduleName = packageName.split('/')[1] ? packageName.split('/')[1] : packageName;
 
 const srcPath = './src';
 const distPackagePath = tsconfigJson.compilerOptions.outDir;
@@ -81,6 +82,13 @@ gulp.task('copy-package', (cb) => {
   return gulp.src('./package_dist.json')
     .pipe(rename('package.json'))
     .pipe(gulp.dest(distPackagePath));
+});
+
+
+gulp.task('test', function (done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js',
+  }, done).start();
 });
 
 
