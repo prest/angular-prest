@@ -1,5 +1,6 @@
 import {
-  Injectable
+  Injectable,
+  Inject
 } from '@angular/core';
 
 import { 
@@ -20,7 +21,7 @@ export class AngularPrestService {
 
   constructor(
     private http: Http,
-    private config: any
+    @Inject('config') private config: any
   ) { }
 
   getToken (): string {

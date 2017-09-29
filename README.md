@@ -15,47 +15,56 @@ npm install
 
 ## Example use:
 
-You need to create a provider file to provide config data to the angular-prest service.
+You need to provide config data to the angular-prest service. Just import AngularPrestModule and put it in "imports" passing your config data to forRoot().
 
-ex: prest.provider.ts
+Ex:
 
-```ts
-import { Http } from '@angular/http';
+yours app.module.ts
+
+```
+import { AngularPrestModule } from './prest.provider';
+```
+
+and put AngularPrestModule in imports:
+
+ex:
+```
+{
+  ...
+  imports: [
+    AngularPrestModule.forRoot({
+      localStorageData: 'the-localstorage-keyword',
+      tokenPath: 'path-to-token',
+      baseUrl: 'the-base-prest-service-url'
+    })
+  ]
+  ...
+}
+```
+
+that is all you need, now you can import the AngularPrestService in yours components angular and use it. o/
+
+ex:
+
+component example!
+```
+import { Component } from '@angular/core';
 
 import { AngularPrestService } from '@prest/angular-prest';
 
-const prestConfig = {
-  localStorageData: 'the-localstorage-keyword',
-  tokenPath: 'path-to-token',
-  baseUrl: 'the-base-prest-service-url'
-}
 
-export function AngularPrestServiceFactory(http: Http) {
-  return new AngularPrestService(http, prestConfig);
-}
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrls: ['./example.component.css']
+})
+export class ExampleComponent {
 
-export let AngularPrestServiceProvider = {
-  provide: AngularPrestService,
-  useFactory: AngularPrestServiceFactory,
-  deps: [Http]
-};
-```
+  constructor(
+    private prestService: AngularPrestService
+  ) { }
 
-After that, just import AngularPrestServiceProvider in your app.module, this way:
-
-```ts
-import { AngularPrestServiceProvider } from './prest.provider';
-```
-
-and put in providers:
-
-ex:
-```ts
-{
   ...
-  providers: [
-    AngularPrestServiceProvider
-  ]
-  ...
+
 }
 ```
