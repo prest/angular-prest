@@ -8,6 +8,11 @@ import { CommonModule } from '@angular/common';
 
 import  { AngularPrestService } from './angular-prest.service';
 
+export interface PrestConfig  {
+	localStorageData: string;
+	baseUrl: string;
+	tokenPath: string;
+}
 
 @NgModule({
 	imports: [
@@ -15,14 +20,12 @@ import  { AngularPrestService } from './angular-prest.service';
 	]
 })
 export class AngularPrestModule {
-	static forRoot(config: any): ModuleWithProviders {
+	static forRoot(config: PrestConfig): ModuleWithProviders {
 		return {
 			ngModule: AngularPrestModule,
 			providers: [
 				AngularPrestService,
-				{
-					provide: 'config', useValue: config
-				}
+				{ provide: 'config', useValue: config }
 			]
 		};
 	}

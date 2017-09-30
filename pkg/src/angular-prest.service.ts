@@ -3,9 +3,10 @@ import {
   Inject
 } from '@angular/core';
 
-import { 
-  Http, 
+import {
+  Http,
   Response,
+  RequestOptionsArgs,
   RequestOptions,
   Headers
 } from '@angular/http';
@@ -15,6 +16,7 @@ import {
 } from 'rxjs';
 import 'rxjs/add/operator/map';
 
+export declare type PrestUrlParams = string | { [name: string]: string } | null;
 
 @Injectable()
 export class AngularPrestService {
@@ -22,107 +24,89 @@ export class AngularPrestService {
   constructor(
     private http: Http,
     @Inject('config') private config: any
-  ) { }
+  ) {
+    if (this.config.baseUrl.substr(-1) !== '/') {
+      this.config.baseUrl += '/';
+    }    
+  }
 
-  getToken (): string {
+  private getToken(): string {
     let data = JSON.parse(localStorage.getItem(this.config.localStorageData) || '{}');
     return data[this.config.tokenPath];
   }
-  
-  getHttpHeaders(): RequestOptions {
-    let token: string = this.getToken();
-    let headers: any = {
-      'Content-Type': 'application/json'
+
+  private getRequestOptions(params?: PrestUrlParams): RequestOptions {
+    const options = {
+      headers: new Headers({'Content-Type': 'application/json'}),
+      params: params
     };
-    if (token) headers['Authorization'] = 'Bearer ' + token;
 
-    return new RequestOptions({  headers: new Headers(headers) });
+    let token: string = this.getToken();  
+    if (token) {
+      options.headers.set('Authorization', `Bearer ${token}`)
+    }
+
+    return new RequestOptions(options);
   }
 
-  getUrl (table: string, params?: string): string {
-    let url = this.config.baseUrl + table;
-    if (params) url += '?' + params;
-    return url;
+  private getUrl(table: string): string {
+    return `${this.config.baseUrl}${table}`;
   }
 
-  get (table: string, params: string):  Observable<any> {
-    return this.http.get(this.getUrl(table, params), this.getHttpHeaders())
-      .map((response: Response) => {
-        let data = response.text() ? response.json()[0] : {};
-        return data;
-      });
+  private mapHandler(res: Response, def: any = []): any {
+    return (res.ok && res.text()) ? res.json() : def;
   }
 
-  list (table: string, params?: string): Observable<any> {
-    return this.http.get(this.getUrl(table, params), this.getHttpHeaders())
-      .map((response: Response) => {
-        let data = response.text() ? response.json() : [];
-        return data;
-      });
+  public get(table: string, params: PrestUrlParams): Observable<any> {
+    return this.http.get(this.getUrl(table), this.getRequestOptions(params))
+      .map((response: Response) => this.mapHandler(response)[0]||{});
   }
 
-  update (table: string, params: string, data: any): Observable<any>  {
-    return this.http.patch(this.getUrl(table, params), data, this.getHttpHeaders())
-      .map((response: Response) => {
-        let data = response.text() ? response.json() : [];
-        return data;
-      });
-  }
-  
-  create (table: string, data: any, params?: string): Observable<any> {
-    return this.http.post(this.getUrl(table, params), data, this.getHttpHeaders())
-      .map((response: Response) => {
-        let data = response.text() ? response.json() : {};
-        return data;
-      });
+  public list(table: string, params?: PrestUrlParams): Observable<any> {
+    return this.http.get(this.getUrl(table), this.getRequestOptions(params))
+      .map((response: Response) => this.mapHandler(response));
   }
 
-  delete (table: string, params: string): Observable<any>  {
-    return this.http.delete(this.getUrl(table, params), this.getHttpHeaders())
-      .map((response: Response) => {
-        let data = response.text() ? response.json() : {};
-        return data;
-      });
+  public update(table: string, params: PrestUrlParams, data: any): Observable<any> {
+    return this.http.patch(this.getUrl(table), data, this.getRequestOptions(params))
+      .map((response: Response) => this.mapHandler(response));
   }
 
-  customQuery (type: string, url: string, data?: any) : Observable<any>  {
+  public create(table: string, data: any, params?: PrestUrlParams): Observable<any> {
+    return this.http.post(this.getUrl(table), data, this.getRequestOptions(params))
+      .map((response: Response) => this.mapHandler(response, {}));
+  }
+
+  public delete(table: string, params: PrestUrlParams): Observable<any> {
+    return this.http.delete(this.getUrl(table), this.getRequestOptions(params))
+      .map((response: Response) => this.mapHandler(response, {}));
+  }
+
+  public customQuery(type: string, url: string, data?: any): Observable<any> {
     let result: any;
 
     switch (type.toLowerCase()) {
       case ('get'):
-        result = this.http.get(url, this.getHttpHeaders())
-          .map((response: Response) => {
-            let data = response.text() ? response.json() : [];
-            return data;
-          });
+        result = this.http.get(url, this.getRequestOptions())
+          .map((response: Response) => this.mapHandler(response));
         break;
 
       case ('put' || 'patch'):
-        result = this.http.patch(url, data, this.getHttpHeaders())
-          .map((response: Response) => {
-            let data = response.text() ? response.json() : {};
-            return data;
-          });
+        result = this.http.patch(url, data, this.getRequestOptions())
+          .map((response: Response) => this.mapHandler(response, {}));
         break;
 
       case ('post'):
-        result = this.http.post(url, data, this.getHttpHeaders())
-          .map((response: Response) => {
-            let data = response.text() ? response.json() : {};
-            return data;
-          });
+        result = this.http.post(url, data, this.getRequestOptions())
+          .map((response: Response) => this.mapHandler(response, {}));
         break;
 
       case ('delete'):
-        result = this.http.get(url, this.getHttpHeaders())
-          .map((response: Response) => {
-            let data = response.text() ? response.json()[0] : {};
-            return data;
-          });
+        result = this.http.get(url, this.getRequestOptions())
+          .map((response: Response) => this.mapHandler(response)[0] || {});
         break;
     }
 
     return result;
   }
-
 }
