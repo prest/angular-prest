@@ -1,9 +1,9 @@
 <p align="center">
-  <h1 align="center">Angular Prest</h1>
-  <p align="center">It is a wrapper service to use with Prest API.</p>
+  <h1 align="center">Angular pREST</h1>
+  <p align="center">It is a wrapper service to use with pREST API.</p>
 </p>
 
-## What is Prest?
+## What is pREST?
 
 - A fully RESTful API from any existing PostgreSQL database written in Go http://postgres.rest.
 
