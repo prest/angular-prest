@@ -1,5 +1,5 @@
 {
-  "name": "@prest/angular-prest",
+  "name": "angular-prest",
   "version": "1.0.0",
   "description": "A service wrapper which help you to use the pREST.",
   "main": "bundles/angular-prest.umd.js",
