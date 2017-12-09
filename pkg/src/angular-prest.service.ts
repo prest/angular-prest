@@ -134,8 +134,13 @@ export class AngularPrestService {
                         .map((response: any) => response || {});
       }
 
-      case ('put' || 'patch'): {
+      case ('put'): {
         return this.http.put(url, data, this._getRequestOptions())
+                        .map((response: any) => response || {});
+      }
+
+      case ('patch'): {
+        return this.http.patch(url, data, this._getRequestOptions())
                         .map((response: any) => response || {});
       }
 
