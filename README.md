@@ -11,7 +11,7 @@
 ## Install
 
 ```bash
-npm install angular-prest --save-dev
+npm install angular-prest --save
 ```
 
 ## Example use:
@@ -23,7 +23,7 @@ Ex:
 yours app.module.ts
 
 ```
-import { AngularPrestModule } from './prest.provider';
+import { AngularPrestModule } from 'angular-prest';
 ```
 
 and put AngularPrestModule in imports:
