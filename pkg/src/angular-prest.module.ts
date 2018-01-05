@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AngularPrestInterceptorService } from './angular-prest-interceptor.service';
 import { AngularPrestService } from './angular-prest.service';
 import { PrestConfig } from './angular-prest.config';
 
@@ -17,7 +18,8 @@ export class AngularPrestModule {
 			ngModule: AngularPrestModule,
 			providers: [
 				AngularPrestService,
-				{ provide: 'config', useValue: config }
+				{ provide: 'config', useValue: config },
+				{ provide: HTTP_INTERCEPTORS, useClass: AngularPrestInterceptorService, multi: true }
 			]
 		};
 	}
