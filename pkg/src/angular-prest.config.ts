@@ -4,5 +4,6 @@
 export interface PrestConfig  {
 	localStorageData: string;
 	baseUrl: string;
+	loginPath: string;
 	tokenPath: string;
 }

@@ -43,14 +43,17 @@ export class AngularPrestService {
    * @returns object
    */
   private _getRequestOptions(params?: PrestUrlParams): any {
-    const options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
+    const options: any = {
+        headers: new HttpHeaders({'Content-Type': 'application/json'})
     };
+
+    if (params) {
+        options['params'] = params;
+    }
 
     let token: string = this._getToken();  
     if (token) {
-      options.headers.set('Authorization', `Bearer ${token}`)
+        options.headers = options.headers.append('Authorization', `Bearer ${token}`);
     }
 
     return options;
