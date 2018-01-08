@@ -1,6 +1,6 @@
 {
   "name": "angular-prest",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A service wrapper which help you to use the pREST.",
   "main": "index.js",
   "author": "Helton Alves",
